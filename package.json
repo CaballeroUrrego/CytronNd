@@ -1,0 +1,12 @@
+{
+  "name": "cytronnd",
+  "version": "1.0.0",
+  "description": "Proyecto inicial de Node.js para CytronNd",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["cytron", "nodejs", "backend"],
+  "author": "TuNombre",
+  "license": "MIT"
+}
