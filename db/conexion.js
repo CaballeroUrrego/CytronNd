@@ -1,18 +1,22 @@
-const mysql = require('mysql2');
+const sql = require('mssql');
 
-const conexion = mysql.createConnection({
-  host: 'localhost',
-  user: 'Urrego',               // Tu usuario de SQL Server
-  password: 'TuNuevaContraseña123!', // Reemplázala con la nueva contraseña
-  database: 'cytronnd'          // Asegúrate de que esta base exista
-});
-
-conexion.connect((err) => {
-  if (err) {
-    console.error('❌ Error al conectar a MySQL:', err.message);
-    return;
+const config = {
+  user: 'Conexion', // Usuario de SQL Server
+  password: 'Urrego', // La que le asignaste
+  server: 'CABALLERO\\se302', // Instancia completa con doble barra
+  database: 'db', // Cambia por la que estés usando
+  options: {
+    trustServerCertificate: true, // Necesario en local
+    encrypt: false                // No usar cifrado en entorno local
   }
-  console.log('✅ Conexión exitosa a MySQL como Urrego');
-});
+};
 
-module.exports = conexion;
+sql.connect(config)
+  .then(() => {
+    console.log('✅ Conectado a SQL Server');
+  })
+  .catch((err) => {
+    console.error('❌ Error al conectar a SQL Server:', err.message);
+  });
+
+module.exports = sql;
