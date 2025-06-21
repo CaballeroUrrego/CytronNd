@@ -1,27 +1,27 @@
 const express = require('express');
-const path = require('path');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-
-// Inicializa app
 const app = express();
-const PORT = process.env.PORT || 3000;
+const path = require('path');
 
-// Middlewares
-app.use(cors()); // Para permitir peticiones desde el frontend
-app.use(bodyParser.json()); // Para procesar JSON en POST
-app.use(express.static(path.join(__dirname, 'public'))); // Archivos estáticos
+// Middleware para analizar JSON en solicitudes
+app.use(express.json());
 
-// Rutas
-app.use('/api/usuarios', require('./routes/usuarios'));    // API usuarios
-app.use('/api/productos', require('./routes/productos'));  // API productos
+// Servir archivos estáticos desde la carpeta "public"
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Ruta principal
+// Rutas de la API
+const productosRoutes = require('./routes/productos');
+const usuariosRoutes = require('./routes/usuarios');
+
+app.use('/api/productos', productosRoutes);
+app.use('/api/usuarios', usuariosRoutes);
+
+// Ruta base que carga index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Iniciar servidor
+// Iniciar el servidor
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });

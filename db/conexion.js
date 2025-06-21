@@ -1,22 +1,28 @@
+// db/conexion.js
 const sql = require('mssql');
 
+// Configuración de conexión
 const config = {
-  user: 'Conexion', // Usuario de SQL Server
-  password: 'Urrego', // La que le asignaste
-  server: 'CABALLERO\\se302', // Instancia completa con doble barra
-  database: 'db', // Cambia por la que estés usando
+  user: 'Conexion',
+  password: 'Urrego',
+  server: 'localhost',
+  port: 1433,
+  database: 'db',
   options: {
-    trustServerCertificate: true, // Necesario en local
-    encrypt: false                // No usar cifrado en entorno local
+    trustServerCertificate: true, // Permite certificados no válidos (dev only)
+    encrypt: false // No cifra la conexión (seguro solo en local)
   }
 };
 
-sql.connect(config)
-  .then(() => {
-    console.log('✅ Conectado a SQL Server');
+// Crear pool de conexión
+const poolPromise = new sql.ConnectionPool(config)
+  .connect()
+  .then(pool => {
+    console.log('✅ Conectado a SQL Server correctamente');
+    return pool;
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('❌ Error al conectar a SQL Server:', err.message);
   });
 
-module.exports = sql;
+module.exports = poolPromise;
